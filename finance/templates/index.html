@@ -1,1 +1,39 @@
+{% extends "layout.html" %}
 
+{% block title %}
+    Index
+{% endblock %}
+
+{% block main %}
+<table action="/" class = "table table-striped">
+    <thread>
+        <tr>
+            <th>Symbol</th>
+            <th>Shares</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thread>
+    <tfoot>
+        <tr>
+            <td colspan = "3"></td>
+            <td>{{ total[0]['SUM(price * shares)']  + cash}}</td>
+        </tr>
+    </tfoot>
+    <tbody>
+        {% for i in inputs%}
+            <tr>
+                <td>{{ i['symbol'] }}</td>
+                <td>{{ i['shares'] }}</td>
+                <td>{{ i['price'] }}</td>
+                <td>{{ i['shares'] * i['price'] }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+                <td colspan="3">CASH</td>
+                <td>{{ cash }}</td>
+            </tr>
+    </tbody>
+</table>
+
+{% endblock %}
