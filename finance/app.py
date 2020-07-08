@@ -39,7 +39,7 @@ Session(app)
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    passwd="Ramukaka",
+    passwd="<<password>>",
     database="finance"
 )
 mycursor = db.cursor(buffered=True, dictionary=True)
