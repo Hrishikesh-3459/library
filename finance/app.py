@@ -1,6 +1,6 @@
 import os
 
-from cs50 import SQL
+import mysql.connector
 from flask import Flask, flash, jsonify, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -33,23 +33,47 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# "CREATE DATABASE IF NOT EXISTS finance"
+
 # Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///finance.db")
+db = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    passwd="Ramukaka",
+    database="finance"
+)
+mycursor = db.cursor(buffered=True, dictionary=True)
+
+# "CREATE TABLE 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username' TEXT NOT NULL, 'hash' TEXT NOT NULL, 'cash' NUMERIC NOT NULL DEFAULT 10000.00 )"
+mycursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, cash INT NOT NULL DEFAULT 10000.00 )")
+db.commit()
+mycursor.execute("CREATE TABLE IF NOT EXISTS transactions (user TEXT NOT NULL, symbol TEXT NOT NULL, shares INTEGER NOT NULL, price INTEGER NOT NULL, transacted TIMESTAMP NOT NULL)")
+db.commit()
 user = []
 # Make sure API key is set
-if not os.environ.get("API_KEY"):
-    raise RuntimeError("API_KEY not set")
+# if not os.environ.get("API_KEY"):
+#     raise RuntimeError("API_KEY not set")
 
 
 @app.route("/")
 @login_required
 def index():
-    check = db.execute("SELECT user FROM transactions")
-    if (user[0] not in check[0]['user']):
-        return render_template("def_index.html")
-    inps = db.execute("SELECT * FROM transactions WHERE user = :username", username = user[0])
-    total =db.execute("SELECT SUM(price * shares) FROM transactions WHERE user = :username", username = user[0])
-    cash = db.execute("SELECT cash FROM users WHERE username = :username", username = user[0])
+    mycursor.execute("SELECT user FROM transactions")
+    check = mycursor.fetchall()
+    if check:
+        if (user[0] not in check[0]['user']):
+            return render_template("def_index.html")
+
+    mycursor.execute("SELECT * FROM transactions WHERE user = (%s)", (user[0],))
+    inps = mycursor.fetchall()
+
+    mycursor.execute("SELECT SUM(price * shares) AS total FROM transactions WHERE user = (%s)", (user[0],))
+    total = mycursor.fetchall()
+    if total[0]['total'] == None:
+        total[0]['total'] = 0
+    mycursor.execute("SELECT cash FROM users WHERE username = (%s)", (user[0],))
+    cash = mycursor.fetchall()
+    print(total)
     return render_template("index.html", inputs = inps, total = total, cash = cash[0]['cash'])
 
 
@@ -76,17 +100,26 @@ def buy():
         if (retu == None):
             return apology("Invalid symbol", 403)
         cost = float(retu['price']) * float(shar)
-        cash = db.execute("SELECT cash FROM users WHERE username = :username", username=user[0])
+
+        mycursor.execute("SELECT cash FROM users WHERE username = (%s)", (user[0],))
+        cash = mycursor.fetchall()
+
         if (cost > cash[0]['cash']):
             return apology("Not enough cash", 403)
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(
             ts).strftime('%Y-%m-%d %H:%M:%S')
         set_cash = cash[0]['cash'] - cost
-        db.execute("CREATE TABLE IF NOT EXISTS transactions(user TEXT NOT NULL, symbol TEXT NOT NULL, shares INTEGER NOT NULL, price INTEGER NOT NULL, transacted TIMESTAMP NOT NULL)")
-        db.execute("INSERT INTO transactions (user, symbol, shares, price, transacted) VALUES (:username, :symb, :shares, :cost, :curTime)",
-                                                                                        username = user[0], symb = symb, shares = shar, cost = cost, curTime = timestamp)
-        db.execute("UPDATE users SET cash = (:cash) WHERE username = (:username)", cash = set_cash, username = user[0])
+
+        # mycursor.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL, username TEXT NOT NULL, hash TEXT NOT NULL, cash NUMERIC NOT NULL DEFAULT 10000.00 )")
+        # db.commit() 
+        mycursor.execute("CREATE TABLE IF NOT EXISTS transactions (user TEXT NOT NULL, symbol TEXT NOT NULL, shares INTEGER NOT NULL, price INTEGER NOT NULL, transacted TIMESTAMP NOT NULL)")
+        db.commit()
+        mycursor.execute("INSERT INTO transactions (user, symbol, shares, price, transacted) VALUES (%s, %s, %s, %s, %s)",
+                                                                                        (user[0], symb, shar, cost, timestamp))
+        db.commit()
+        mycursor.execute("UPDATE users SET cash = (%s) WHERE username = (%s)", (set_cash, user[0]))
+        db.commit()
         return redirect("/")
     else:
         return render_template("buy.html")
@@ -97,7 +130,8 @@ def buy():
 @app.route("/history")
 @login_required
 def history():
-    inps = db.execute("SELECT * FROM transactions WHERE user = :username", username = user[0])
+    mycursor.execute("SELECT * FROM transactions WHERE user = (%s)", (user[0],))
+    inps = mycursor.fetchall()
     return render_template("history.html", inputs = inps)
 
 
@@ -120,9 +154,9 @@ def login():
             return apology("must provide password", 403)
 
         # Query database for username
-        rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
-
+        mycursor.execute("SELECT * FROM users WHERE username = (%s)", (request.form.get("username"),))
+        rows = mycursor.fetchall()
+        # print(rows)
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             return apology("invalid username and/or password", 403)
@@ -181,11 +215,10 @@ def register():
         elif not request.form.get("confirmation"):
             return apology("must confirm password", 403)
 
-        rows = db.execute("SELECT * FROM users WHERE username = :username",
-                          username=request.form.get("username"))
-
+        mycursor.execute("SELECT * FROM users WHERE username = (%s)", (request.form.get("username"),))
+        rows = mycursor.fetchall()
         # Ensure username exists and password is correct
-        if len(rows) != 0:
+        if rows and len(rows) != 0:
             return apology("Username already exists", 403)
         pas = request.form.get("password")
         con = request.form.get("confirmation")
@@ -209,7 +242,8 @@ def register():
 
         hash_pas = generate_password_hash(pas, method='pbkdf2:sha256', salt_length=8)
         user_name = request.form.get("username")
-        db.execute("INSERT INTO users (username, hash) VALUES (:username, :hashs)", username=user_name, hashs=hash_pas)
+        mycursor.execute("INSERT INTO users (username, hash) VALUES (%s, %s)", (user_name, hash_pas))
+        db.commit()
         return redirect("/")
     else:
         return render_template("register.html")
@@ -228,29 +262,35 @@ def sell():
 
         sy = request.form.get("symbol")
         shar = request.form.get("shares")
-        avail_shares = db.execute("SELECT shares FROM transactions WHERE user = :username AND symbol = :sym", username = user[0], sym = sy)
+
+        mycursor.execute("SELECT shares FROM transactions WHERE user = (%s) AND symbol = (%s)", (user[0], sy))
+        avail_shares = mycursor.fetchall()
 
         if (int(shar) > int(avail_shares[0]['shares'])):
             return apology("given shares more than available shares", 403)
 
         symb = request.form.get("symbol")
-        cash = db.execute("SELECT cash FROM users WHERE username = :username", username=user[0])
+        mycursor.execute("SELECT cash FROM users WHERE username = (%s)", (user[0],))
+        cash = mycursor.fetchall()
 
         # Returned values from lookup
         retu = lookup(symb)
         cost = float(retu['price']) * float(shar)
         set_cash = cash[0]['cash'] + cost
-        db.execute("UPDATE users SET cash = (:cash) WHERE username = (:username)", cash = set_cash, username = user[0])
+        mycursor.execute("UPDATE users SET cash = %s WHERE username = %s", (set_cash, user[0]))
+        db.commit()
         shar = int(shar) * (-1)
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(
             ts).strftime('%Y-%m-%d %H:%M:%S')
-        db.execute("INSERT INTO transactions (user, symbol, shares, price, transacted) VALUES (:username, :symb, :shares, :cost, :curTime)",
-                                                                                        username = user[0], symb = symb, shares = shar, cost = cost, curTime = timestamp)
+        mycursor.execute("INSERT INTO transactions (user, symbol, shares, price, transacted) VALUES (%s, %s, %s, %s, %s)",
+                                                                                        (user[0], symb, shar, cost, timestamp))
+        db.commit()
         return redirect("/")
     else:
-        symbs = db.execute("SELECT DISTINCT symbol FROM transactions WHERE user = :username", username = user[0])
-        print(symbs)
+        mycursor.execute("SELECT DISTINCT symbol FROM transactions WHERE user = (%s)", (user[0],))
+        symbs = mycursor.fetchall()
+        # print(symbs)
         return render_template("sell.html", symbo = symbs)
 
 
