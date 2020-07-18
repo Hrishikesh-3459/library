@@ -3,7 +3,7 @@ import mysql.connector
 
 class dbMysql():
     def __init__(self):
-        self.pwd = "<password>"
+        self.pwd = "<<password>>"
         self.username = "root"
         self.host = "localhost"
         self.database = "library"
@@ -26,6 +26,9 @@ class dbMysql():
         self.mydb.commit()
         mycursor.execute(
             "CREATE TABLE IF NOT EXISTS register (serial_no INT NOT NULL AUTO_INCREMENT, user_id int, book_name VARCHAR(50) NOT NULL, borrowed TIMESTAMP, returned TIMESTAMP, PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
+        self.mydb.commit()
+        mycursor.execute(
+            "CREATE TABLE IF NOT EXISTS books (user_id int, philosophers_stone TINYINT(1) DEFAULT 0, chamber_of_secrets TINYINT(1) DEFAULT 0, FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
 
 
