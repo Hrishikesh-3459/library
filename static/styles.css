@@ -1,0 +1,45 @@
+body {
+    font-family: Nunito;
+}
+
+.main h1 {
+    font-weight: 100;
+    font-size: 1in;
+    text-align: center;
+    padding-bottom: 280px;
+    padding-top: 280px;
+    color: white;
+    background-color: black;
+}
+
+.main {
+    font-size: 1.5rem;
+    font-weight: 100;
+    /* background-color: black; */
+}
+
+
+.nav1 {
+    /* padding: 20px; */
+    margin-left: 10px;
+    font-weight: 300;
+    font-size: 1.5em;
+}
+
+.card1 {
+    background-color: aquamarine;
+}
+
+.button1 {
+    background-color: rgb(38, 179, 132);
+}
+
+.card1 {
+    float: left;
+}
+
+.card2 {
+    padding-top: 200px;
+    text-align: center;
+    float: right;
+}
