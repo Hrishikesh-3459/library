@@ -126,7 +126,7 @@ def register():
 
                 # Inserting username and password in the 'users' table
                 mycursor.execute(
-                        "INSERT INTO users (username, password, email, name) VALUES (%s, %s)", (username, hash_pas, email, first_name))
+                        "INSERT INTO users (username, password, email, name) VALUES (%s, %s, %s, %s)", (username, hash_pas, email, first_name))
                 mydb.commit()
 
                 # Retrieving the user_id
@@ -139,6 +139,8 @@ def register():
                 mycursor.execute(
                         "INSERT INTO books (user_id) VALUES (%s)", (user_id,))
                 mydb.commit()
+
+                return redirect("/login")
         else:
                 return render_template("signUp.html")
 
