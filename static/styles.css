@@ -43,3 +43,25 @@ body {
     text-align: center;
     float: right;
 }
+
+.dropdown1 {
+    float: right;
+}
+
+.input-group {
+    padding-top: 20px;
+    width: 75%;
+    align-items: center;
+}
+
+.container h1 {
+    padding-top: 10px;
+}
+
+.form-control {
+    padding:10px;
+}
+
+.user {
+    width: 50%;
+}

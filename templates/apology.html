@@ -1,0 +1,68 @@
+<!-- Webpage to show an error message when the user provides invalid or no input at all -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <title>
+            Error!
+        </title>
+        <style>
+            /* Class for the "whoops" at the top */
+            .heading
+            {
+                color : rgb(179, 42, 83);
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; 
+                text-align: center; 
+                font-size: 1in;
+                
+            }
+            /* Class for the image */
+            .container
+            {
+                position: relative;
+                text-align: center;
+                color: white;
+            }
+            /* Class for the text that appears over the image */
+            .bottom-right {
+                position: absolute;
+                bottom: 8px;
+                right: 520px;
+                font-size: x-large;
+                font-family: Georgia, 'Times New Roman', Times, serif;
+                color: black;
+            }
+             .butt3
+            {
+               /* margin-top: 100px; */
+               padding: 10px;
+                padding-left: 20px;
+                padding-right: 20px;
+                float: left;
+                border: solid black;
+                background-color: rgb(18, 80, 131); 
+                color: white;
+                font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+                top: 1px;
+                right: 1px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body style='background-color: rgb(32, 204, 204)'>
+
+        <form action="/">
+            <button class=butt3 type="submit" method="GET">Home</button>
+        </form>
+
+        <h1 class = "heading">ERROR</h1>
+
+        <div class = "container">
+
+            <img src= "static\dog.jpg" alt= "Picture of a dog" style="width: 500px;height:500px;" />
+            <!-- The message that appears on the bottom of the image is dependant on the type of error. -->
+            <div class = "bottom-right">{{ bottom }}</div> 
+
+        </div>
+    </body>
+</html>

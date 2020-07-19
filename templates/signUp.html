@@ -28,40 +28,52 @@
                 </li>
             </ul>
         </div>
-    </nav>
+	</nav>
+	
 
-    <form action="/signUp" method="post">
-    	<div class="input-group">
-			<div class="input-group-prepend">
-			    <span class="input-group-text">First and last name</span>
-		    </div>
-			<input type="text" aria-label="First name" class="form-control" name="first_name">
-		    <input type="text" aria-label="Last name" class="form-control">
-		</div>
-		<div class="form-group">
-		    <h3>Email address</h3>
-			<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
-			<small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
-		</div>
-		
-		<input class="form-control" type="text" placeholder="Username" name="username">
-		
-		<div class="form-group">
-		   	<label for="exampleInputPassword1">Password</label>
-		   	<input type="password" class="form-control" id="exampleInputPassword1" name="password">
-		</div>
-		<div class="form-group">
-		   	<label for="exampleInputPassword1">Confirm Password</label>
-		   	<input type="password" class="form-control" id="exampleInputPassword1" name="confirmation">
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	</form>
+	<div class="container">
 
+		<form action="/signUp" method="post">
+			<h1>SIGN UP</h1>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">First Name</span>
+				</div>
+				<input type="text" aria-label="First name" class="form-control" name="first_name" required>
+			</div>
+			<!-- <div class="form-group">
+				<span class="input-group-text">Email ID</span>
+				<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+				<small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
+			</div> -->
+			<div class="input-group flex-nowrap">
+				<div class="input-group-prepend">
+				  <span class="input-group-text" id="addon-wrapping">email ID</span>
+				</div>
+				<input type="email" class="form-control" aria-label="email" aria-describedby="addon-wrapping" name="email">
+				<small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
+			</div>
+			
+			<div class="input-group user">
+				<div class="input-group-prepend">
+				  <span class="input-group-text" id="basic-addon1">Username</span>
+				</div>
+				<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name="username">
+			</div>
 
+			<div class="form-group user">
+				   <label for="exampleInputPassword1">Password</label>
+				   <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+			</div>
+			<div class="form-group user">
+				   <label for="exampleInputPassword1">Confirm Password</label>
+				   <input type="password" class="form-control" id="exampleInputPassword1" name="confirmation" required>
+			</div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</form>
 
-
-
-
+	</div>
+   
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>

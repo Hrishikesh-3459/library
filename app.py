@@ -69,30 +69,41 @@ def login():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
-        # Ensure username was submitted
-        if not request.form.get("username"):
-            return apology("must provide username")
-
-        # Ensure password was submitted
-        elif not request.form.get("password"):
-            return apology("must provide password")
+        user_inp = request.form.get("user_inp")
+        password = request.form.get("password")
 
         # Query database for username
-        mycursor.execute("SELECT * FROM users WHERE username = (%s)", (request.form.get("username"),))
+        mycursor.execute("SELECT username, email FROM users") 
         rows = mycursor.fetchall()
+        names = []
+        emails = []
+        for i,j in rows:
+                names.append(i)
+                emails.append(j)
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
-            return apology("invalid username and/or password")
+        if user_inp not in names and user_inp not in emails:
+                return apology("User not found")
 
+        if user_inp in names:
+                mycursor.execute("SELECT password FROM users WHERE username = (%s)", (user_inp,)) 
+                password_in = mycursor.fetchone()
+                # print(password_in[0])
+        
+        elif user_inp in emails:
+                mycursor.execute("SELECT password FROM users WHERE email = (%s)", (user_inp,)) 
+                password_in = mycursor.fetchone()
+                # print(password_in)
+
+        if not check_password_hash(password_in[0], password):
+                return apology("Incorrect Password")
         # Remember which user has logged in
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = user_inp
         user_name = request.form.get("username")
         user.clear()
         user.append(user_name)
         # Redirect user to home page
-        return redirect("/")
-
+        return redirect('/homepage')
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
@@ -118,6 +129,13 @@ def register():
                 if rows and len(rows) != 0:
                         return apology("Username already exists")
 
+                # Checking if the email_id already exists
+                mycursor.execute(
+                        "SELECT * FROM users WHERE email = (%s)", (email,))
+                rows = mycursor.fetchall()
+                if rows and len(rows) != 0:
+                        return apology("Email already exists")
+
                 if password != confirmation:
                         return apology("Passwords don't match")
 
@@ -131,7 +149,7 @@ def register():
 
                 # Retrieving the user_id
                 mycursor.execute(
-                        "SELECT user_id, FROM users WHERE username = (%s)", (user,))
+                        "SELECT user_id FROM users WHERE username = (%s)", (username,))
                 u_id = mycursor.fetchone()
                 user_id = u_id[0]
 
@@ -140,11 +158,23 @@ def register():
                         "INSERT INTO books (user_id) VALUES (%s)", (user_id,))
                 mydb.commit()
 
-                return redirect("/login")
+                return render_template("login.html")
         else:
                 return render_template("signUp.html")
 
-@app.route("/books")
-def books():
-        return render_template("books.html")
+@app.route("/homepage")
+@login_required
+def homepage():
+        mycursor.execute("SHOW columns FROM books")
+        columns = mycursor.fetchall()
+        titles = []
+        lst = []
+        for i in columns:
+                mycursor.execute(f"SELECT user_id FROM books WHERE {i[0]} = 1")
+                cur = mycursor.fetchall()
+                lst = list(map(lst.append, cur))
+                if user_id in lst:
+                        val = ' '.join(i[0].split('_'))
+                        titles.append(val.title())
+        return render_template("homepage.html", books = titles)
 # register()

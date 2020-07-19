@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>	LIBRARY</title>
+	<title>Login</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
@@ -31,19 +31,24 @@
             </ul>
         </div>
     </nav>
-    <form action="/login" method="post">
-    	<div class="form-group">
-        <h3>Email address</h3>
-        <!-- Try changin type to email -->
-		<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="username">
-		<small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
-		</div>
-		<div class="form-group">
-			   	<label for="exampleInputPassword1">Password</label>
-			   	<input type="password" class="form-control" id="exampleInputPassword1" name="password">
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    <div class="container">
+        <form action="/login" method="post">
+            <h1>LOG IN</h1>
+            <div class="form-group user">
+            <h3>Email address</h3>
+            <!-- Try changin type to email -->
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="user_inp" required>
+            <small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
+            </div>
+            <div class="form-group user">
+                       <label for="exampleInputPassword1">Password</label>
+                       <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+    </div>
+    
     
 
 
