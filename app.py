@@ -18,6 +18,7 @@ mycursor = mydb.cursor(buffered=True)
 db.configure_db(mycursor)
 
 user_id = None
+user_name = None
 user = []
 
 app = Flask(__name__)
@@ -55,9 +56,8 @@ def apology(message):
         return render_template("apology.html", bottom=message)
 
 @app.route("/")
-@login_required
 def index():
-    return render_template("index.html")
+        return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -80,7 +80,7 @@ def login():
         # Query database for username
         mycursor.execute("SELECT * FROM users WHERE username = (%s)", (request.form.get("username"),))
         rows = mycursor.fetchall()
-        # print(rows)
+
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):
             return apology("invalid username and/or password")
@@ -103,29 +103,35 @@ def login():
 def register():
         if request.method == "POST":
                 global user_id
+                global user_name
 
-                user = input("Enter username: ")
-                password = input("Enter Password: ")
+                first_name = request.form.get("first_name")
+                email = request.form.get("email")
+                username = request.form.get("username")
+                password = request.form.get("password")
+                confirmation = request.form.get("confirmation")
+                
+                # Checking if the username already exists
+                mycursor.execute(
+                        "SELECT * FROM users WHERE username = (%s)", (username,))
+                rows = mycursor.fetchall()
+                if rows and len(rows) != 0:
+                        return apology("Username already exists")
+
+                if password != confirmation:
+                        return apology("Passwords don't match")
 
                 # Generating a hash key for the user's password
                 hash_pas = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
-                # Checking if the username already exists
-                mycursor.execute(
-                        "SELECT * FROM users WHERE username = (%s)", (user,))
-                rows = mycursor.fetchall()
-                if rows and len(rows) != 0:
-                        print("Username exists")
-                        return 
-
                 # Inserting username and password in the 'users' table
                 mycursor.execute(
-                        "INSERT INTO users (username, password) VALUES (%s, %s)", (user, hash_pas))
+                        "INSERT INTO users (username, password, email, name) VALUES (%s, %s)", (username, hash_pas, email, first_name))
                 mydb.commit()
 
                 # Retrieving the user_id
                 mycursor.execute(
-                        "SELECT user_id FROM users WHERE username = (%s)", (user,))
+                        "SELECT user_id, FROM users WHERE username = (%s)", (user,))
                 u_id = mycursor.fetchone()
                 user_id = u_id[0]
 
@@ -133,6 +139,8 @@ def register():
                 mycursor.execute(
                         "INSERT INTO books (user_id) VALUES (%s)", (user_id,))
                 mydb.commit()
+        else:
+                return render_template("signUp.html")
 
 @app.route("/books")
 def books():
