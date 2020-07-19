@@ -25,18 +25,22 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/books">Books</a>
+                </li>
             </ul>
         </div>
     </nav>
-    <form>
+    <form action="/login" method="post">
     	<div class="form-group">
-		<h3>Email address</h3>
-		<input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <h3>Email address</h3>
+        <!-- Try changin type to email -->
+		<input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="username">
 		<small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
 		</div>
 		<div class="form-group">
 			   	<label for="exampleInputPassword1">Password</label>
-			   	<input type="password" class="form-control" id="exampleInputPassword1">
+			   	<input type="password" class="form-control" id="exampleInputPassword1" name="password">
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
     </form>
