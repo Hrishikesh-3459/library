@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            LIBRARY
+        </title>
+    <style>
+        .book-bg{
+            width: 700px;
+            height: 800px;
+            position: relative;
+            margin: 100px auto;
+            background: url('/Users/hrishikesh/Desktop/checking/Chamber of Secrets.jpg') no-repeat;
+            background-size: cover;
+            transform-style: preserve-3d;
+            perspective: 500px;
+        }
+        .book-pg{
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            overflow: hidden;
+            background: url('/Users/hrishikesh/Desktop/checking/Deathly Hallows.jpg') no-repeat;
+            background-size: cover;
+            transform-origin: 0 50%;
+            transition: all 1.2s ease;
+        }
+        .book-bg:hover .book-pg{
+            transform: rotateY(-180deg);
+        }
+    </style>
+    </head>
+    <body>
+        <div class = "book-bg">
+            <div class = "book-pg">
+        </div>
+    </body>
+</html>
