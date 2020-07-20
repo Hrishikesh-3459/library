@@ -177,4 +177,29 @@ def homepage():
                         val = ' '.join(i[0].split('_'))
                         titles.append(val.title())
         return render_template("homepage.html", books = titles)
+
+@app.route("/pages", methods=["GET", "POST"])
+@login_required
+def pages():
+    # pages = convert_from_path('harry-potter-and-the-philosophers-stone-extract.pdf', 500)
+    # i = 0
+    # out = []
+    # for page in pages:
+    #     name = 'static/out' + str(i) + '.jpg'
+    #     out.append(name)
+    #     i += 1
+    #     page.save(name, 'JPEG')
+    # print(out)
+    if request.method == "POST":
+        selected = request.form["selected"]
+        out = [selected]
+        prefix = []
+        for j in selected.split():
+                prefix.append(j[0].lower())
+        prefix = ''.join(prefix) + 'Out'
+        print(prefix)
+        for i in range(18):
+                name = prefix + str(i)
+                out.append(name)
+        return render_template("pages.html", out = out)
 # register()

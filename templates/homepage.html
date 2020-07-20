@@ -50,7 +50,10 @@
                     <img src="static/{{ i }}.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">Harry Potter and the {{ i }}</h5>
-                        <a href="#" class="btn btn-primary">READ NOW</a>
+                        <form action = '/pages' method = "post">
+                            <button type="submit" class="btn btn-primary" name = "selected" value = "{{i}}">READ NOW</button>
+                        </form>
+                        <!-- <a href="#" class="btn btn-primary">READ NOW</a> -->
                     </div>
                 </div>
             </div>
