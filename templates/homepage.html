@@ -33,11 +33,13 @@
         </div>
         <li class="nav-item dropdown drop1" >
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Hello, {{ name }}
+            <br>
             Your Account
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">Go to account</a>
-                <a class="dropdown-item" href="#">Balance</a>
+                <a class="dropdown-item" href="#">Balance: {{ balance }}</a>
                 <a class="dropdown-item" href="/logout">Log out</a>
             </div>
         </li>

@@ -68,6 +68,8 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
+        global user_id
+        global user_name
 
         user_inp = request.form.get("user_inp")
         password = request.form.get("password")
@@ -86,22 +88,25 @@ def login():
                 return apology("User not found")
 
         if user_inp in names:
-                mycursor.execute("SELECT password FROM users WHERE username = (%s)", (user_inp,)) 
-                password_in = mycursor.fetchone()
-                # print(password_in[0])
+                mycursor.execute("SELECT password, user_id FROM users WHERE username = (%s)", (user_inp,)) 
+                sql_ret = mycursor.fetchone()
+                user_name = user_inp
         
         elif user_inp in emails:
-                mycursor.execute("SELECT password FROM users WHERE email = (%s)", (user_inp,)) 
-                password_in = mycursor.fetchone()
-                # print(password_in)
+                mycursor.execute("SELECT password, user_id, username FROM users WHERE email = (%s)", (user_inp,)) 
+                sql_ret = mycursor.fetchone()
+                user_name = sql_ret[2]
 
-        if not check_password_hash(password_in[0], password):
+
+        if not check_password_hash(sql_ret[0], password):
                 return apology("Incorrect Password")
+
         # Remember which user has logged in
-        session["user_id"] = user_inp
-        user_name = request.form.get("username")
+        session["user_id"] = sql_ret[1]
         user.clear()
         user.append(user_name)
+        user_id = sql_ret[1]
+
         # Redirect user to home page
         return redirect('/homepage')
     # User reached route via GET (as by clicking a link or via redirect)
@@ -168,15 +173,21 @@ def homepage():
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
         titles = []
-        lst = []
         for i in columns:
                 mycursor.execute(f"SELECT user_id FROM books WHERE {i[0]} = 1")
                 cur = mycursor.fetchall()
-                lst = list(map(lst.append, cur))
-                if user_id in lst:
-                        val = ' '.join(i[0].split('_'))
-                        titles.append(val.title())
-        return render_template("homepage.html", books = titles)
+                if not cur:
+                        continue
+                for j in cur:
+                        if user_id in j:
+                                val = ' '.join(i[0].split('_'))
+                                titles.append(val.title())
+
+        mycursor.execute("SELECT name, money FROM users WHERE user_id = (%s)", (user_id,))
+        sql_ret = mycursor.fetchone()
+
+        return render_template("homepage.html", books = titles, balance = sql_ret[1], name = sql_ret[0])
+
 
 @app.route("/pages", methods=["GET", "POST"])
 @login_required
@@ -197,7 +208,6 @@ def pages():
         for j in selected.split():
                 prefix.append(j[0].lower())
         prefix = ''.join(prefix) + 'Out'
-        print(prefix)
         for i in range(18):
                 name = prefix + str(i)
                 out.append(name)
