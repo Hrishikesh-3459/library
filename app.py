@@ -17,9 +17,8 @@ mydb = db.connection()
 mycursor = mydb.cursor(buffered=True)
 db.configure_db(mycursor)
 
-user_id = None
-user_name = None
-user = []
+
+user = {"id": None, "name": None}
 
 app = Flask(__name__)
 
@@ -68,8 +67,8 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-        global user_id
-        global user_name
+
+        user.clear()
 
         user_inp = request.form.get("user_inp")
         password = request.form.get("password")
@@ -90,12 +89,12 @@ def login():
         if user_inp in names:
                 mycursor.execute("SELECT password, user_id FROM users WHERE username = (%s)", (user_inp,)) 
                 sql_ret = mycursor.fetchone()
-                user_name = user_inp
+                user["name"] = user_inp
         
         elif user_inp in emails:
                 mycursor.execute("SELECT password, user_id, username FROM users WHERE email = (%s)", (user_inp,)) 
                 sql_ret = mycursor.fetchone()
-                user_name = sql_ret[2]
+                user["name"] = sql_ret[2]
 
 
         if not check_password_hash(sql_ret[0], password):
@@ -103,9 +102,7 @@ def login():
 
         # Remember which user has logged in
         session["user_id"] = sql_ret[1]
-        user.clear()
-        user.append(user_name)
-        user_id = sql_ret[1]
+        user["id"] = sql_ret[1]
 
         # Redirect user to home page
         return redirect('/homepage')
@@ -118,8 +115,6 @@ def login():
 @app.route("/signUp", methods=["GET", "POST"])
 def register():
         if request.method == "POST":
-                global user_id
-                global user_name
 
                 first_name = request.form.get("first_name")
                 email = request.form.get("email")
@@ -156,11 +151,11 @@ def register():
                 mycursor.execute(
                         "SELECT user_id FROM users WHERE username = (%s)", (username,))
                 u_id = mycursor.fetchone()
-                user_id = u_id[0]
+                user["id"] = u_id[0]
 
                 # Creating an Entry for the user in the 'Books' table
                 mycursor.execute(
-                        "INSERT INTO books (user_id) VALUES (%s)", (user_id,))
+                        "INSERT INTO books (user_id) VALUES (%s)", (user["id"],))
                 mydb.commit()
 
                 return render_template("login.html")
@@ -179,11 +174,11 @@ def homepage():
                 if not cur:
                         continue
                 for j in cur:
-                        if user_id in j:
+                        if user["id"] in j:
                                 val = ' '.join(i[0].split('_'))
                                 titles.append(val.title())
 
-        mycursor.execute("SELECT name, money FROM users WHERE user_id = (%s)", (user_id,))
+        mycursor.execute("SELECT name, money FROM users WHERE user_id = (%s)", (user["id"],))
         sql_ret = mycursor.fetchone()
 
         return render_template("homepage.html", books = titles, balance = sql_ret[1], name = sql_ret[0])
