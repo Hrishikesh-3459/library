@@ -236,3 +236,14 @@ def logout():
 def borrow():
         selected = request.form["selected"]
         return render_template("borrow.html", book = selected)
+
+
+@app.route("/buy", methods=["GET", "POST"])
+@login_required
+def buy():
+        selected = request.form["selected"]
+        book = '_'.join(selected.lower().split())
+        mycursor.execute(
+                f"UPDATE books SET {book} = 1 WHERE user_id = (%s)", (user["id"],))
+        mydb.commit()
+        return redirect('/homepage')

@@ -41,7 +41,9 @@
             <div class="card2">
               <h5 class="card-title">Harry Potter and the {{ book }}</h5>
               <p class="card-text">==Some text about the book here==</p>
-            <button type="button" class="btn btn-outline-primary">BORROW</button>
+              <form action = '/buy' method = "post">
+                <button type="submit" class="btn btn-outline-primary" name = "selected" value = "{{ book }}">BORROW</button>
+              </form>
           </div>
 			</div>
     </div>
