@@ -226,6 +226,7 @@ def explore():
 
 
 @app.route("/logout")
+@login_required
 def logout():
     """Log user out"""
 
@@ -235,3 +236,8 @@ def logout():
     # Redirect user to login form
     return redirect('/')
 
+@app.route("/borrow", methods=["GET", "POST"])
+@login_required
+def borrow():
+        selected = request.form["selected"]
+        return render_template("borrow.html", book = selected)
