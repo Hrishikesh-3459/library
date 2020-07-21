@@ -26,6 +26,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
                 </li> 
+                <li class="nav-item">
+                    <a class="nav-link" href="/explore">Explore</a>
+                </li>
             </ul>       
         </div>
         <li class="nav-item dropdown drop1" >
@@ -35,7 +38,7 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <a class="dropdown-item" href="#">Go to account</a>
                 <a class="dropdown-item" href="#">Balance</a>
-                <a class="dropdown-item" href="#">Log out</a>
+                <a class="dropdown-item" href="/logout">Log out</a>
             </div>
         </li>
     </nav>
@@ -43,7 +46,6 @@
     <div class="container">
         <h1>Your Books</h1>
         <!-- your books will appear here from database -->
-        example book:
         {% for i in books%}
             <div class="col-lg-2">
                 <div class="card" style="width: 14rem;">

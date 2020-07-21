@@ -25,21 +25,31 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/explore">Explore</a>
+                </li>
             </ul>
         </div>
     </nav>
-    
+        
         <div class="row">
+
+            {% for i in books%}
             <div class="col-lg-2">
                 <div class="card" style="width: 14rem;">
-                    <img src="static/Sorcerer's Stone.jpg" class="card-img-top" alt="...">
+                    <img src="static/{{ i }}.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Harry Potter and the Sorceror's Stone</h5>
-                        <a href="#" class="btn btn-primary">BORROW</a>
+                        <h5 class="card-title">Harry Potter and the {{ i }}</h5>
+                        <form action = '/pages' method = "post">
+                            <button type="submit" class="btn btn-primary" name = "selected" value = "{{i}}">BORROW</button>
+                        </form>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2">
+            {% endfor %}
+        </div>
+        
+            <!-- <div class="col-lg-2">
                 <div class="card" style="width: 14rem;">
                     <img src="static/Chamber of Secrets.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
@@ -48,7 +58,7 @@
                     </div>
                 </div>
             </div>
-
+        
             <div class="col-lg-2">
                 <div class="card" style="width: 14rem;">
                     <img src="static/Prisoner Of Azkaban.jpg" class="card-img-top" alt="...">
@@ -87,9 +97,9 @@
                         <a href="#" class="btn btn-primary">BORROW</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-        </div>
+        
     	
     
 

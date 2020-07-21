@@ -202,4 +202,26 @@ def pages():
                 name = prefix + str(i)
                 out.append(name)
         return render_template("pages.html", out = out)
-# register()
+
+@app.route("/explore")
+def explore():
+        mycursor.execute("SHOW columns FROM books")
+        columns = mycursor.fetchall()
+        titles = []
+        for i in columns:
+                val = ' '.join(i[0].split('_'))
+                titles.append(val.title())
+        titles.pop(0)
+        return render_template("explore.html", books = titles)
+
+
+@app.route("/logout")
+def logout():
+    """Log user out"""
+
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login form
+    return redirect('/')
+
