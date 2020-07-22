@@ -167,7 +167,9 @@ def register():
 def homepage():
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
-        titles = []
+
+        # Keys in titles are the code, and the values are names
+        titles = {}
         for i in columns:
                 mycursor.execute(f"SELECT user_id FROM books WHERE {i[0]} = 1")
                 cur = mycursor.fetchall()
@@ -175,8 +177,9 @@ def homepage():
                         continue
                 for j in cur:
                         if user["id"] in j:
-                                val = ' '.join(i[0].split('_'))
-                                titles.append(val.title())
+                                val = (i[0].split('_'))
+                                tmp = (''.join(list(zip(*val))[0]))
+                                titles[tmp] = ' '.join(val).title()
 
         mycursor.execute("SELECT name, money FROM users WHERE user_id = (%s)", (user["id"],))
         sql_ret = mycursor.fetchone()
@@ -198,25 +201,30 @@ def pages():
     # print(out)
     if request.method == "POST":
         selected = request.form["selected"]
-        out = [selected]
-        prefix = []
-        for j in selected.split():
-                prefix.append(j[0].lower())
-        prefix = ''.join(prefix) + 'Out'
-        for i in range(18):
-                name = prefix + str(i)
+        x = os.listdir("static")
+        out = [selected+"Cover"]
+        i = 1
+        while True:
+                name = selected + str(i)
                 out.append(name)
+                i += 1
+                if (selected + str(i) + '.jpg') not in x:
+                        break
         return render_template("pages.html", out = out)
 
 @app.route("/explore")
 def explore():
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
-        titles = []
+
+        # Keys in titles are the code, and the values are names
+        titles = {}
         for i in columns:
-                val = ' '.join(i[0].split('_'))
-                titles.append(val.title())
-        titles.pop(0)
+                val = (i[0].split('_'))
+                tmp = (''.join(list(zip(*val))[0]))
+                titles[tmp] = ' '.join(val).title()
+        titles.pop('ui')
+        print(titles)
         return render_template("explore.html", books = titles)
 
 
@@ -234,8 +242,11 @@ def logout():
 @app.route("/borrow", methods=["GET", "POST"])
 @login_required
 def borrow():
-        selected = request.form["selected"]
-        return render_template("borrow.html", book = selected)
+        selected = request.form["selected"].split()
+        code = ''.join(list(zip(*selected))[0]).lower() 
+        book = {"code": code, "name": ' '.join(selected)}
+        print(f"book = {book}")
+        return render_template("borrow.html", book = book)
 
 
 @app.route("/buy", methods=["GET", "POST"])

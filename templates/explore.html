@@ -34,14 +34,14 @@
         
         <div class="row">
 
-            {% for i in books%}
+            {% for i in books %}
             <div class="col-lg-2">
                 <div class="card" style="width: 14rem;">
-                    <img src="static/{{ i }}.jpg" class="card-img-top" alt="...">
+                    <img src="static/{{ i }}Cover.jpg" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Harry Potter and the {{ i }}</h5>
+                        <h5 class="card-title">{{ books[i] }}</h5>
                         <form action = '/borrow' method = "post">
-                            <button type="submit" class="btn btn-primary" name = "selected" value = "{{i}}">BORROW</button>
+                            <button type="submit" class="btn btn-primary" name = "selected" value = "{{ books[i] }}">BORROW</button>
                         </form>
                     </div>
                 </div>

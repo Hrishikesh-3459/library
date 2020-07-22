@@ -28,7 +28,18 @@ class dbMysql():
             "CREATE TABLE IF NOT EXISTS register (serial_no INT NOT NULL AUTO_INCREMENT, user_id int, book_name VARCHAR(50) NOT NULL, borrowed TIMESTAMP, returned TIMESTAMP, PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
         mycursor.execute(
-            "CREATE TABLE IF NOT EXISTS books (user_id int, philosophers_stone TINYINT(1) DEFAULT 0, chamber_of_secrets TINYINT(1) DEFAULT 0, prisoner_of_azkaban TINYINT(1) DEFAULT 0, goblet_of_fire TINYINT(1) DEFAULT 0, order_of_the_phoenix TINYINT(1) DEFAULT 0, half_blood_prince TINYINT(1) DEFAULT 0, deathly_hallows TINYINT(1) DEFAULT 0, FOREIGN KEY (user_id) REFERENCES users(user_id))")
+            "CREATE TABLE IF NOT EXISTS books (user_id int, harry_potter_and_the_philosophers_stone TINYINT(1) DEFAULT 0,"
+            "harry_potter_and_the_chamber_of_secrets TINYINT(1) DEFAULT 0," 
+            "harry_potter_and_the_prisoner_of_azkaban TINYINT(1) DEFAULT 0," 
+            "harry_potter_and_the_goblet_of_fire TINYINT(1) DEFAULT 0,"
+            "harry_potter_and_the_order_of_the_phoenix TINYINT(1) DEFAULT 0,"
+            "harry_potter_and_the_half_blood_prince TINYINT(1) DEFAULT 0,"
+            "harry_potter_and_the_deathly_hallows TINYINT(1) DEFAULT 0,"
+            "the_hunger_games TINYINT(1) DEFAULT 0,"
+            "the_hunger_games_catching_fire TINYINT(1) DEFAULT 0,"
+            "the_hunger_games_mockingjay TINYINT(1) DEFAULT 0,"
+            "the_da_vinci_code TINYINT(1) DEFAULT 0,"
+            "FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
 
 

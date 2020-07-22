@@ -34,15 +34,15 @@
 
     <div class="container">
     			<div class="card1" style="width: 30rem;">
-				    <img src="static/{{ book }}.jpg" class="card-img-top" alt="...">
+				    <img src="static/{{ book['code'] }}Cover.jpg" class="card-img-top" alt="...">
           </div>
 
           <div>
             <div class="card2">
-              <h5 class="card-title">Harry Potter and the {{ book }}</h5>
+              <h5 class="card-title">{{ book["name"] }}</h5>
               <p class="card-text">==Some text about the book here==</p>
               <form action = '/buy' method = "post">
-                <button type="submit" class="btn btn-outline-primary" name = "selected" value = "{{ book }}">BORROW</button>
+                <button type="submit" class="btn btn-outline-primary" name = "selected" value = "{{ book['name'] }}">BORROW</button>
               </form>
           </div>
 			</div>
