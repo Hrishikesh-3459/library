@@ -52,10 +52,14 @@ def login_required(f):
     return decorated_function
 
 def apology(message):
+        """ Renders an apology page, whenever the user makes an error. """
+
         return render_template("apology.html", bottom=message)
 
 @app.route("/")
 def index():
+        """ The main introductory page of the program. """
+
         return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
@@ -114,6 +118,8 @@ def login():
 # Function for user registration
 @app.route("/signUp", methods=["GET", "POST"])
 def register():
+        """ Registers the user. """
+
         if request.method == "POST":
 
                 first_name = request.form.get("first_name")
@@ -165,6 +171,8 @@ def register():
 @app.route("/homepage")
 @login_required
 def homepage():
+        """ The homepage of the user logged in, showing the books they have along with their available balance """
+
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
 
@@ -190,15 +198,8 @@ def homepage():
 @app.route("/pages", methods=["GET", "POST"])
 @login_required
 def pages():
-    # pages = convert_from_path('harry-potter-and-the-philosophers-stone-extract.pdf', 500)
-    # i = 0
-    # out = []
-    # for page in pages:
-    #     name = 'static/out' + str(i) + '.jpg'
-    #     out.append(name)
-    #     i += 1
-    #     page.save(name, 'JPEG')
-    # print(out)
+    """ Displaying the contents of the book. """
+
     if request.method == "POST":
         selected = request.form["selected"]
         x = os.listdir("static")
@@ -214,6 +215,8 @@ def pages():
 
 @app.route("/explore")
 def explore():
+        """ Shows the catalogue of the available books. """
+
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
 
@@ -224,7 +227,6 @@ def explore():
                 tmp = (''.join(list(zip(*val))[0]))
                 titles[tmp] = ' '.join(val).title()
         titles.pop('ui')
-        print(titles)
         return render_template("explore.html", books = titles)
 
 
@@ -242,16 +244,19 @@ def logout():
 @app.route("/borrow", methods=["GET", "POST"])
 @login_required
 def borrow():
+        """ Shows the user information about the payment and the book. """
+
         selected = request.form["selected"].split()
         code = ''.join(list(zip(*selected))[0]).lower() 
         book = {"code": code, "name": ' '.join(selected)}
-        print(f"book = {book}")
         return render_template("borrow.html", book = book)
 
 
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
+        """ Records the user's purchase and adds the book to homepage. """ 
+        
         selected = request.form["selected"]
         book = '_'.join(selected.lower().split())
         mycursor.execute(
