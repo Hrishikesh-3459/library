@@ -50,6 +50,7 @@ class dbMysql():
             "the_hunger_games_catching_fire TINYINT(1) DEFAULT 0,"
             "the_hunger_games_mockingjay TINYINT(1) DEFAULT 0,"
             "the_da_vinci_code TINYINT(1) DEFAULT 0,"
+            "the_chronicles_of_narnia_the_lion_the_witch_and_the_wardrobe TINYINT(1) DEFAULT 0," 
             "FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
 
