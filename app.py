@@ -222,13 +222,35 @@ def explore():
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
 
+        # All of the available titles
+        all_titles = list(columns)
+
+        # The titles user already has
+        user_titles = list()
+        for i in columns:
+                mycursor.execute(f"SELECT user_id FROM books WHERE {i[0]} = 1")
+                cur = mycursor.fetchall()
+                if not cur:
+                        continue
+                for j in cur:
+                        if user["id"] in j:
+                                user_titles.append(i)
+        
+        # Showing the titles that the user doesn't have
+        i = 0
+        while i < len(all_titles):
+                if all_titles[i] in user_titles:
+                        all_titles.pop(i)
+                i += 1
+        
         # Keys in titles are the code, and the values are names
         titles = {}
-        for i in columns:
+        for i in all_titles:
                 val = (i[0].split('_'))
                 tmp = (''.join(list(zip(*val))[0]))
                 titles[tmp] = ' '.join(val).title()
         titles.pop('ui')
+        
         return render_template("explore.html", books = titles)
 
 
@@ -238,7 +260,9 @@ def logout():
     """Log user out"""
 
     # Forget any user_id
+    global user
     session.clear()
+    user = {"id": None, "name": None}
 
     # Redirect user to login form
     return redirect('/')
