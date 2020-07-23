@@ -250,7 +250,7 @@ def explore():
                 tmp = (''.join(list(zip(*val))[0]))
                 titles[tmp] = ' '.join(val).title()
         titles.pop('ui')
-        
+
         return render_template("explore.html", books = titles)
 
 
@@ -303,6 +303,10 @@ def buy():
         mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
         money = mycursor.fetchone()
         balance = money[0] - 200
+
+        # Checks if the user has enough balance
+        if balance < 0:
+                return apology("Not enough balance")
 
         # Update the users table
         mycursor.execute("UPDATE users SET money = (%s) WHERE user_id = (%s)", (balance, user["id"]))
