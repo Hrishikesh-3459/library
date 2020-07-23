@@ -10,6 +10,8 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 import datetime
 import time
 from functools import wraps
+import time
+import datetime
 
 # Setup for database
 db = dbMysql()
@@ -259,7 +261,27 @@ def buy():
         
         selected = request.form["selected"]
         book = '_'.join(selected.lower().split())
+
+        # Get the current time
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+        # Update the books table to show that the current user has made the transaction
         mycursor.execute(
                 f"UPDATE books SET {book} = 1 WHERE user_id = (%s)", (user["id"],))
         mydb.commit()
+
+        # Update the register table and insert all the values into it
+        mycursor.execute(f"INSERT INTO register (user_id, book_name, borrowed) VALUES (%s, %s, %s)", (user["id"], book, timestamp))
+        mydb.commit()
+
+        # Fetch the current balance of the user
+        mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
+        money = mycursor.fetchone()
+        balance = money[0] - 200
+
+        # Update the users table
+        mycursor.execute("UPDATE users SET money = (%s) WHERE user_id = (%s)", (balance, user["id"]))
+        mydb.commit()
+
         return redirect('/homepage')
