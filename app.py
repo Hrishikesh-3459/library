@@ -237,11 +237,8 @@ def explore():
                                 user_titles.append(i)
         
         # Showing the titles that the user doesn't have
-        i = 0
-        while i < len(all_titles):
-                if all_titles[i] in user_titles:
-                        all_titles.pop(i)
-                i += 1
+        for i in user_titles:
+                all_titles.remove(i)
         
         # Keys in titles are the code, and the values are names
         titles = {}

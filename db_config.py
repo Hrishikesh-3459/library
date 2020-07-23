@@ -33,7 +33,7 @@ class dbMysql():
         mycursor.execute(
             "CREATE TABLE IF NOT EXISTS register (serial_no INT NOT NULL AUTO_INCREMENT,"
             "user_id int,"
-            "book_name VARCHAR(50) NOT NULL,"
+            "book_name VARCHAR(255) NOT NULL,"
             "borrowed TIMESTAMP,"
             "returned TIMESTAMP,"
             "PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
