@@ -54,19 +54,25 @@ def login_required(f):
     return decorated_function
 
 def apology(message):
-        """ Renders an apology page, whenever the user makes an error. """
+        """ 
+        Renders an apology page, whenever the user makes an error. 
+        """
 
         return render_template("apology.html", bottom=message)
 
 @app.route("/")
 def index():
-        """ The main introductory page of the program. """
+        """ 
+        The main introductory page of the program. 
+        """
 
         return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    """Log user in"""
+    """
+    Log user in
+    """
 
     # Forget any user_id
     session.clear()
@@ -120,7 +126,9 @@ def login():
 # Function for user registration
 @app.route("/signUp", methods=["GET", "POST"])
 def register():
-        """ Registers the user. """
+        """ 
+        Registers the user. 
+        """
 
         if request.method == "POST":
 
@@ -173,7 +181,9 @@ def register():
 @app.route("/homepage")
 @login_required
 def homepage():
-        """ The homepage of the user logged in, showing the books they have along with their available balance """
+        """ 
+        The homepage of the user logged in, showing the books they have along with their available balance 
+        """
 
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
@@ -200,7 +210,9 @@ def homepage():
 @app.route("/pages", methods=["GET", "POST"])
 @login_required
 def pages():
-    """ Displaying the contents of the book. """
+    """ 
+    Displaying the contents of the book. 
+    """
 
     if request.method == "POST":
         selected = request.form["selected"]
@@ -217,7 +229,9 @@ def pages():
 
 @app.route("/explore")
 def explore():
-        """ Shows the catalogue of the available books. """
+        """ 
+        Shows the catalogue of the available books. 
+        """
 
         mycursor.execute("SHOW columns FROM books")
         columns = mycursor.fetchall()
@@ -254,7 +268,9 @@ def explore():
 @app.route("/logout")
 @login_required
 def logout():
-    """Log user out"""
+    """
+    Log user out
+    """
 
     # Forget any user_id
     global user
@@ -267,7 +283,9 @@ def logout():
 @app.route("/borrow", methods=["GET", "POST"])
 @login_required
 def borrow():
-        """ Shows the user information about the payment and the book. """
+        """ 
+        Shows the user information about the payment and the book. 
+        """
 
         selected = request.form["selected"].split()
         code = ''.join(list(zip(*selected))[0]).lower() 
@@ -278,7 +296,9 @@ def borrow():
 @app.route("/buy", methods=["GET", "POST"])
 @login_required
 def buy():
-        """ Records the user's purchase and adds the book to homepage. """ 
+        """ 
+        Records the user's purchase and adds the book to homepage. 
+        """ 
         
         selected = request.form["selected"]
         book = '_'.join(selected.lower().split())
