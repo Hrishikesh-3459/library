@@ -330,3 +330,49 @@ def buy():
         mydb.commit()
 
         return redirect('/homepage')
+
+@app.route("/returnBook", methods=["GET", "POST"])
+@login_required
+def returnBook():
+    """ 
+    Displaying the contents of the book. 
+    """
+
+    if request.method == "POST":
+        selected = request.form["ret_selected"]
+        book = '_'.join(selected.lower().split())
+        
+        # Get the current time
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime("%Y/%m/%d")
+
+        # Update the books table to show that the current user has made the transaction
+        # mycursor.execute(
+        #         f"UPDATE books SET {book} = 1 WHERE user_id = (%s)", (user["id"],))
+        # mydb.commit()
+
+        mycursor.execute(f"SELECT borrowed FROM library.register WHERE user_id = {user['id']} AND book_name = (%s)", (book,))
+        borrowed_date = mycursor.fetchone()
+
+        
+        
+        borrowed_date = (str(borrowed_date[0])).split()[0]
+
+
+        returned_date = list(map(int, timestamp.split('/')))
+        borrowed_date = list(map(int, borrowed_date.split('-')))
+
+
+        d0 = datetime.date(returned_date[0], returned_date[1], returned_date[2])
+        d1 = datetime.date(borrowed_date[0], borrowed_date[1], borrowed_date[2])
+        delta = (d0 - d1).days
+        print(delta)
+
+        # Update the register table and insert all the values into it
+        # mycursor.execute(f"INSERT INTO register (user_id, book_name, returned) VALUES (%s, %s, %s)", (user["id"], book, timestamp))
+        # mydb.commit()
+
+
+        code = ''.join(list(zip(*(selected.split())))[0]).lower() 
+        tmp = {"code": code, "name": selected}
+        return render_template("returnBook.html", book = tmp)
