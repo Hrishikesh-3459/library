@@ -20,6 +20,8 @@ mycursor = mydb.cursor(buffered=True)
 db.configure_db(mycursor)
 
 
+# Just to show adithya how easy it is to upload files to github
+
 user = {"id": None, "name": None}
 
 app = Flask(__name__)
