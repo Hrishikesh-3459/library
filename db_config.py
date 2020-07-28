@@ -3,7 +3,7 @@ import mysql.connector
 
 class dbMysql():
     def __init__(self):
-        self.pwd = "Ramukaka"
+        self.pwd = "password"
         self.username = "root"
         self.host = "localhost"
         self.database = "library"
