@@ -7,17 +7,11 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="static/styles.css">
     </head>
-
-    <style>
-        body{
-            background: url(static\jumbotron.jpg);
-        }
-
-    </style>
+     
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg">
             <a class="navbar-brand" href="/login">LIBRARY</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -39,11 +33,11 @@
                 </li>
                 
               </ul>
-              <form action="/signUp" method="get">
-                <button type="submit" class="btn btn-secondary nav1">Sign up</button>
+              <form class="card1" action="/signUp" method="get">
+                <button type="submit" class="btn button1">Sign up</button>
               </form>
-              <form action="/login" method = "get">
-                <button type="submit" class="btn btn-secondary nav1">Log in</button>
+              <form class="card1" action="/login" method = "get">
+                <button type="submit" class="btn button1">Log in</button>
               </form>
 
             </div>

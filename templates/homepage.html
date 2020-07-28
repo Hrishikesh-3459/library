@@ -5,11 +5,11 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="static/styles.css">
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light nav1">
+	<nav class="navbar navbar-expand-lg navbar-light bg">
         <a class="navbar-brand" href="#">LIBRARY</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    			<span class="navbar-toggler-icon"></span>
@@ -31,28 +31,29 @@
                 </li>
             </ul>       
         </div>
+        <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
         <li class="nav-item dropdown drop1" >
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Hello, {{ name }}
-            <br>
-            Your Account
-            </a>
+                Hello, {{ name }}
+            </a>  
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">Go to account</a>
-                <a class="dropdown-item" href="#">Balance: {{ balance }}</a>
-                <a class="dropdown-item" href="/logout">Log out</a>
+                <a class="dropdown-item drop2" href="#">Go to account</a>
+                <a class="dropdown-item drop2 disabled" href="#">Balance: {{ balance }}</a>
+                <a class="dropdown-item drop2" href="/logout">Log out</a>
             </div>
         </li>
     </nav>
 
     <div class="container">
         <h1>Your Books</h1>
+    </div>
 
+        <div class="row">
         <!--  Keys in titles are the code, and the values are names -->
         {% for i in books%}
-            <div class="col-lg-2">
-                <div class="card" style="width: 14rem;">
-                    <img src="static/{{ i }}Cover.jpg" class="card-img-top" alt="...">
+            <div class="col-lg-2 d-flex align-content-stretch flex-wrap book1">
+                <div class="card bg" style="width: 14rem;">
+                    <img src="static/{{ i }}Cover.jpg" class="card-img-top" alt="..." width=100 height=350>
                     <div class="card-body">
                         <h5 class="card-title">{{ books[i] }}</h5>
                         <form action = '/pages' method = "post">
@@ -66,7 +67,8 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+        </div>
+
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

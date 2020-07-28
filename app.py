@@ -378,3 +378,11 @@ def returnBook():
         code = ''.join(list(zip(*(selected.split())))[0]).lower() 
         tmp = {"code": code, "name": selected}
         return render_template("returnBook.html", book = tmp)
+
+@app.route("/contact")
+def contact():
+        """ 
+        Page where the contact info is displayed
+        """
+
+        return render_template("contact.html")

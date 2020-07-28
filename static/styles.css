@@ -1,5 +1,7 @@
 body {
     font-family: Nunito;
+    background-color: black;
+    color: white;
 }
 
 .main h1 {
@@ -28,14 +30,13 @@ body {
 
 .card1 {
     background-color: aquamarine;
+    float: left;
+
 }
 
 .button1 {
     background-color: rgb(38, 179, 132);
-}
-
-.card1 {
-    float: left;
+    margin-right: 5px;
 }
 
 .card2 {
@@ -44,8 +45,9 @@ body {
     float: right;
 }
 
-.dropdown1 {
-    float: right;
+.drop1 {
+    list-style: none;
+    color:black;
 }
 
 .input-group {
@@ -62,6 +64,31 @@ body {
     padding:10px;
 }
 
-.user {
-    width: 50%;
+.bg {
+    background-color: aquamarine;
+    color: black;
+}
+
+.drop2 {
+    font-family: nunito;
+    color: gray;
+}
+
+.book1 {
+    margin-bottom: 20px;
+}
+
+.button2 {
+    background-color: rgb(38, 179, 132);
+    padding:10px;
+}
+
+.bg1 {
+    color:white;
+    font-family: Nunito;
+}
+
+.centre {
+    padding:100px;
+    padding-left: 350px;
 }

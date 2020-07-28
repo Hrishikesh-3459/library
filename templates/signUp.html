@@ -5,11 +5,11 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="static/styles.css">
 
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-light bg">
         <a class="navbar-brand" href="#">LIBRARY</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    			<span class="navbar-toggler-icon"></span>
@@ -34,7 +34,7 @@
 	</nav>
 	
 
-	<div class="container">
+	<div class="container centre">
 
 		<form action="/signUp" method="post">
 			<h1>SIGN UP</h1>
@@ -54,25 +54,29 @@
 				  <span class="input-group-text" id="addon-wrapping">email ID</span>
 				</div>
 				<input type="email" class="form-control" aria-label="email" aria-describedby="addon-wrapping" name="email">
-				<small id="emailHelp" class="form-text text-muted">We won't share your email with anyone else.</small>
 			</div>
 			
-			<div class="input-group user">
+			<div class="input-group flex-nowrap">
 				<div class="input-group-prepend">
 				  <span class="input-group-text" id="basic-addon1">Username</span>
 				</div>
 				<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name="username">
 			</div>
 
-			<div class="form-group user">
-				   <label for="exampleInputPassword1">Password</label>
-				   <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+			<div class="input-group flex-nowrap">
+				<div class="input-group-prepend">
+				  <label for="exampleInputPassword1" class="input-group-text" id="addon-wrapping">Password</label>
+				</div>
+				<input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
 			</div>
-			<div class="form-group user">
-				   <label for="exampleInputPassword1">Confirm Password</label>
-				   <input type="password" class="form-control" id="exampleInputPassword1" name="confirmation" required>
+			<div class="input-group flex-nowrap">
+				<div class="input-group-prepend">
+				  <label for="exampleInputPassword1" class="input-group-text" id="addon-wrapping"> Confirm Password</label>
+				</div>
+				<input type="password" class="form-control" id="exampleInputPassword1" name="confirmation"  required>
 			</div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+
+			<button type="submit" style="margin-top: 20px;" class="btn button1">Submit</button>
 		</form>
 
 	</div>
