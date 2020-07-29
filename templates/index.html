@@ -6,7 +6,7 @@
         </title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="static/styles.css">
     </head>
      
@@ -26,7 +26,7 @@
                   <a class="nav-link" href="#">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="/contact">Contact Us</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/explore">Explore</a>
@@ -41,23 +41,32 @@
               </form>
 
             </div>
-          </nav>
+        </nav>
 
+
+        <div class="header" style="background-image: url('static/header.jpg');">
           <section class="container-fluid text-center">
-                  <div class="row main">
-                      <div class="col-lg-6">
-                          <h1>LIBRARY</h1>
-                      </div>
-                      <div class="col-lg-6">
-                        <div class="card card1" style="width: 45rem;">
-                            <div class="card-body">
-                              <p class="card-text">You can click here to register to the library and enjoy a new world full of stories you want to hear.</p>
-                              <a href="/login" class="btn button1">Register Now</a>
-                            </div>
-                          </div>
-                      </div>
-                  </div> 
+              <div class="row main">
+                <div class="col-lg-6">
+                  <h1 class="head1">LIBRARY</h1>
+                </div>
+                
+                <div class="col-lg-6 register">
+                  <!-- <div class="card" style="width: 20rem;">
+                    <div class="card-body">
+                      <p class="card-text">You can click here to register to the library and enjoy a new world full of stories you want to read.</p>
+                        <a href="/login" class="btn button1">Register Now</a>
+                    </div>-->
+                  <div>
+                    <h2>You can click here to register to the library and enjoy a new world full of stories you want to read</h2>
+                    <a href="/signUp" class="btn button1 mt-5">Register Now</a>
+                  </div>
+                </div>
+
+              </div> 
           </section>
+        </div>
+
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

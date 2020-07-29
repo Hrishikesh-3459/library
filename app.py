@@ -262,9 +262,15 @@ def explore():
                 val = (i[0].split('_'))
                 tmp = (''.join(list(zip(*val))[0]))
                 titles[tmp] = ' '.join(val).title()
-        titles.pop('ui')
+        fin = {}
+        i = 0
+        for j in titles:
+                if i == 0:
+                        i += 1
+                        continue
+                fin[j] = titles[j]
 
-        return render_template("explore.html", books = titles)
+        return render_template("explore.html", books = fin)
 
 
 @app.route("/logout")
@@ -339,45 +345,13 @@ def returnBook():
     """ 
     Displaying the contents of the book. 
     """
-
-    if request.method == "POST":
-        selected = request.form["ret_selected"]
-        book = '_'.join(selected.lower().split())
-        
-        # Get the current time
-        ts = time.time()
-        timestamp = datetime.datetime.fromtimestamp(ts).strftime("%Y/%m/%d")
-
-        # Update the books table to show that the current user has made the transaction
-        # mycursor.execute(
-        #         f"UPDATE books SET {book} = 1 WHERE user_id = (%s)", (user["id"],))
-        # mydb.commit()
-
-        mycursor.execute(f"SELECT borrowed FROM library.register WHERE user_id = {user['id']} AND book_name = (%s)", (book,))
-        borrowed_date = mycursor.fetchone()
-
-        
-        
-        borrowed_date = (str(borrowed_date[0])).split()[0]
+    selected = request.form["ret_selected"].split()
+    code = ''.join(list(zip(*selected))[0]).lower() 
+    book = {"code": code, "name": ' '.join(selected)}
+    return render_template("returnBook.html", book = book)
 
 
-        returned_date = list(map(int, timestamp.split('/')))
-        borrowed_date = list(map(int, borrowed_date.split('-')))
 
-
-        d0 = datetime.date(returned_date[0], returned_date[1], returned_date[2])
-        d1 = datetime.date(borrowed_date[0], borrowed_date[1], borrowed_date[2])
-        delta = (d0 - d1).days
-        print(delta)
-
-        # Update the register table and insert all the values into it
-        # mycursor.execute(f"INSERT INTO register (user_id, book_name, returned) VALUES (%s, %s, %s)", (user["id"], book, timestamp))
-        # mydb.commit()
-
-
-        code = ''.join(list(zip(*(selected.split())))[0]).lower() 
-        tmp = {"code": code, "name": selected}
-        return render_template("returnBook.html", book = tmp)
 
 @app.route("/contact")
 def contact():
@@ -386,3 +360,66 @@ def contact():
         """
 
         return render_template("contact.html")
+
+@app.route("/sell", methods=["GET", "POST"])
+@login_required
+def sell():
+        """
+        Records that the user has returned the book and reflects the info accordingly
+        """
+
+        if request.method == "POST":
+                selected = request.form["selected"]
+                book = '_'.join(selected.lower().split())
+                
+                # Get the current time
+                ts = time.time()
+
+                # raw time is in the format YYYY/MM/DD HH:MM:SS
+                cur_time_raw = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+
+                # Taking the borrowed time from database
+                mycursor.execute(f"SELECT borrowed FROM library.register WHERE user_id = {user['id']} AND book_name = (%s)", (book,))
+                borrowed_time_raw = mycursor.fetchall()
+                
+                # Formatted time is in the format YYYY/MM/DD in the form of string
+                cur_time_formatted = (str(cur_time_raw)).split()[0]
+                borrowed_time_formatted = (str(borrowed_time_raw[-1][-1])).split()[0]
+                
+                # Converting string form to list form
+                cur_time_fin = list(map(int, cur_time_formatted.split('-')))   
+                borrowed_time_fin = list(map(int, borrowed_time_formatted.split('-')))
+
+                # Number of days between the two given dates
+                d0 = datetime.date(cur_time_fin[0], cur_time_fin[1], cur_time_fin[2])
+                d1 = datetime.date(borrowed_time_fin[0], borrowed_time_fin[1], borrowed_time_fin[2])
+                delta = (d0 - d1).days
+
+                mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
+                money = mycursor.fetchone()
+                old_bal = money[0] + 200
+
+                new_bal = old_bal - 10
+
+                if delta > 7:
+                        while delta != 7:
+                                delta -= 1
+                                new_bal -= 2
+
+                # # Database start
+
+                # Update the books table to show that the current user has made the transaction
+                mycursor.execute(
+                        f"UPDATE books SET {book} = 0 WHERE user_id = (%s)", (user["id"],))
+                mydb.commit()
+
+                # Update the register table and insert all the values into it
+                mycursor.execute(f"UPDATE register SET returned = (%s) WHERE user_id = (%s) AND borrowed = (%s) AND book_name = (%s)", (cur_time_raw, user["id"], borrowed_time_raw[-1][-1], book))
+                mydb.commit()
+
+                # Updating the user's balance
+                mycursor.execute(
+                        f"UPDATE users SET money = {new_bal} WHERE user_id = (%s)", (user["id"],))
+                mydb.commit()
+
+                return redirect('/homepage')

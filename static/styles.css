@@ -5,13 +5,12 @@ body {
 }
 
 .main h1 {
-    font-weight: 100;
+    font-weight: 600;
     font-size: 1in;
     text-align: center;
     padding-bottom: 280px;
     padding-top: 280px;
     color: white;
-    background-color: black;
 }
 
 .main {
@@ -88,7 +87,35 @@ body {
     font-family: Nunito;
 }
 
-.centre {
+/* .centre {
     padding:100px;
     padding-left: 350px;
+} */
+
+.header {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    height: 950px;
 }
+
+.register{
+    padding-top:300px;
+    text-align: center;
+}
+
+.head1 {
+    font-weight: 800;
+}
+
+.icon {
+    color:white;
+    font-size: larger;
+}
+
+.heading {
+    font-size: 1in;
+    font-family: nunito;
+    font-weight: 800;
+    text-align: center;
+} 		
