@@ -324,6 +324,10 @@ def buy():
         mycursor.execute(f"INSERT INTO register (user_id, book_name, borrowed) VALUES (%s, %s, %s)", (user["id"], book, timestamp))
         mydb.commit()
 
+        # Update the transactions table
+        mycursor.execute(f"INSERT INTO transactions (user_id, book_name, borrowed) VALUES (%s, %s, %s)", (user["id"], book, timestamp))
+        mydb.commit()
+
         # Fetch the current balance of the user
         mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
         money = mycursor.fetchone()
@@ -406,7 +410,8 @@ def sell():
                                 delta -= 1
                                 new_bal -= 2
 
-                # # Database start
+                fee = abs(new_bal - old_bal)
+                # Database start
 
                 # Update the books table to show that the current user has made the transaction
                 mycursor.execute(
@@ -417,9 +422,69 @@ def sell():
                 mycursor.execute(f"UPDATE register SET returned = (%s) WHERE user_id = (%s) AND borrowed = (%s) AND book_name = (%s)", (cur_time_raw, user["id"], borrowed_time_raw[-1][-1], book))
                 mydb.commit()
 
+                # Update the transactions table and insert all the values into it
+                mycursor.execute(f"UPDATE transactions SET returned = (%s), fee = (%s) WHERE user_id = (%s) AND borrowed = (%s) AND book_name = (%s)", (cur_time_raw, fee, user["id"], borrowed_time_raw[-1][-1], book))
+                mydb.commit()
+
                 # Updating the user's balance
                 mycursor.execute(
                         f"UPDATE users SET money = {new_bal} WHERE user_id = (%s)", (user["id"],))
                 mydb.commit()
 
                 return redirect('/homepage')
+
+
+@app.route("/transactions", methods=["GET", "POST"])
+@login_required
+def transactions():
+
+        ts = time.time()
+        cur_time_raw = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+        cur_time_formatted = (str(cur_time_raw)).split()[0]
+
+        tran = []
+        mycursor.execute("SELECT book_name, borrowed, returned FROM transactions WHERE user_id = (%s)", (user["id"],))
+        data = mycursor.fetchall()
+        for i,d in enumerate(data):
+                val = [i+1]
+                val.extend(d)
+                tran.append(val)
+
+        for i in tran:
+                name_raw = i[1].split('_')
+                name_fin = (' '.join(name_raw)).title()
+                i[1] = name_fin # Formatting the name, removing the underscores and capitalising the first letter from each word
+
+                borrowed_time_formatted = (str(i[2]).split())[0]
+
+                # Converting string form to list form
+                cur_time_fin = list(map(int, cur_time_formatted.split('-')))   
+                borrowed_time_fin = list(map(int, borrowed_time_formatted.split('-')))
+
+                if i[3] != None: # Checking if the user has already returned the book
+                        cur_time_formatted = (str(i[3])).split()[0]
+                        cur_time_fin = list(map(int, cur_time_formatted.split('-')))   
+                        
+
+                # Number of days between the two given dates
+                d0 = datetime.date(cur_time_fin[0], cur_time_fin[1], cur_time_fin[2])
+                d1 = datetime.date(borrowed_time_fin[0], borrowed_time_fin[1], borrowed_time_fin[2])
+                delta = (d0 - d1).days
+
+                mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
+                money = mycursor.fetchone()
+                old_bal = money[0] + 200
+
+                new_bal = old_bal - 10
+
+                if delta > 7:
+                        while delta != 7:
+                                delta -= 1
+                                new_bal -= 2
+
+                # The fee that the user owes
+                fee = abs(new_bal - old_bal)
+
+                i.append(fee)
+
+        return render_template("transactions.html", transactions = tran)

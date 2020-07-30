@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>	Transactions </title>
+</head>
+<body>
+    <table action="/">
+        <thread>
+            <tr>
+                <th>Serial Number</th>
+                <th>Book Name</th>
+                <th>Borrowed Date</th>
+                <th>Returned Date</th>
+                <th>Fee</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for i in transactions%}
+                <tr>
+                    <td>{{ i[0] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                    <td>{{ i[3] }}</td>
+                    <td>{{ i[4] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

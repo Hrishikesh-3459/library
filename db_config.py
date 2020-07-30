@@ -21,6 +21,7 @@ class dbMysql():
     def configure_db(self, mycursor):
         mycursor.execute("CREATE DATABASE IF NOT EXISTS library")
         self.mydb.commit()
+
         mycursor.execute(
             "CREATE TABLE IF NOT EXISTS users (user_id INT NOT NULL AUTO_INCREMENT,"
             "username VARCHAR(255) NOT NULL,"
@@ -30,14 +31,16 @@ class dbMysql():
             "email VARCHAR(255) NOT NULL,"
             "PRIMARY KEY (user_id))")
         self.mydb.commit()
+
         mycursor.execute(
             "CREATE TABLE IF NOT EXISTS register (serial_no INT NOT NULL AUTO_INCREMENT,"
-            "user_id int,"
+            "user_id INT,"
             "book_name VARCHAR(255) NOT NULL,"
             "borrowed TIMESTAMP,"
             "returned TIMESTAMP,"
             "PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
+
         mycursor.execute(
             "CREATE TABLE IF NOT EXISTS books (user_id int, harry_potter_and_the_philosophers_stone TINYINT(1) DEFAULT 0,"
             "harry_potter_and_the_chamber_of_secrets TINYINT(1) DEFAULT 0," 
@@ -52,6 +55,16 @@ class dbMysql():
             "the_da_vinci_code TINYINT(1) DEFAULT 0,"
             "the_chronicles_of_narnia_the_lion_the_witch_and_the_wardrobe TINYINT(1) DEFAULT 0," 
             "FOREIGN KEY (user_id) REFERENCES users(user_id))")
+        self.mydb.commit()
+
+        mycursor.execute(
+            "CREATE TABLE IF NOT EXISTS transactions (serial_no INT NOT NULL AUTO_INCREMENT,"
+            "user_id INT,"
+            "book_name VARCHAR(255) NOT NULL,"
+            "borrowed TIMESTAMP,"
+            "returned TIMESTAMP,"
+            "fee INT NULL DEFAULT 10,"
+            "PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
 
 
