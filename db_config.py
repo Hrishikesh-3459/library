@@ -67,6 +67,13 @@ class dbMysql():
             "PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
 
+        mycursor.execute(
+            "CREATE TABLE IF NOT EXISTS readlist (serial_no INT NOT NULL AUTO_INCREMENT,"
+            "user_id INT,"
+            "book_name VARCHAR(255) NOT NULL,"
+            "PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
+        self.mydb.commit()
+
 
 # CREATE TABLE `users` (
 #   `id` INT NOT NULL AUTO_INCREMENT,

@@ -45,15 +45,9 @@
                         <form action = '/borrow' method = "post" style="float: left;">
                             <button type="submit" class="btn button1" name = "selected" value = "{{ books[i] }}">BORROW</button>
                         </form>
-                        {% if books[i] in read_list %}
-                        <form style="float: right;" action = '/readlist' method = "post">
-                            <button type="submit" class="btn button2 fa fa-heart" name = "read_selected" value = "{{ books[i] }}"></button>
+                        <form style="float: right;">
+                            <button class="btn button2 fa fa-heart-o"></button>
                         </form>
-                        {% else %}
-                        <form style="float: right;" action = '/readlist' method = "post">
-                            <button type="submit" class="btn button2 fa fa-heart-o" name = "read_selected" value = "{{ books[i] }}"></button>
-                        </form>
-                        {% endif %}
                     </div>   
                 </div>
             </div>

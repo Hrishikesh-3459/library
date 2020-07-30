@@ -270,7 +270,16 @@ def explore():
                         continue
                 fin[j] = titles[j]
 
-        return render_template("explore.html", books = fin)
+        # Create a list of books that the user has added to readlist
+        
+        mycursor.execute("SELECT book_name FROM readlist WHERE user_id = (%s)", (user["id"],))
+        read_list_raw = list(mycursor.fetchall())
+
+        read_list = []
+        for i in read_list_raw:
+                read_list.append(i[0])
+
+        return render_template("explore.html", books = fin, read_list = read_list)
 
 
 @app.route("/logout")
@@ -488,3 +497,25 @@ def transactions():
                 i.append(fee)
 
         return render_template("transactions.html", transactions = tran)
+
+@app.route("/readlist", methods=["GET", "POST"])
+@login_required
+def readlist():
+        selected = request.form["read_selected"]
+
+        mycursor.execute("SELECT book_name FROM readlist WHERE user_id = (%s)", (user["id"],))
+        books_raw = mycursor.fetchall()
+
+        books = []
+        for i in books_raw:
+                books.append(i[0])
+        
+        if selected not in books:
+                mycursor.execute("INSERT INTO readlist(book_name, user_id) VALUES (%s, %s)", (selected, user["id"]))
+                mydb.commit()
+
+        else:
+                mycursor.execute("DELETE FROM readlist WHERE book_name = (%s) AND user_id = (%s)", (selected, user["id"]))
+                mydb.commit()
+
+        return redirect('/explore')
