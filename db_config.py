@@ -92,4 +92,3 @@ class dbMysql():
 #     PRIMARY KEY (serial_no),
 #     FOREIGN KEY (user_id) REFERENCES users(id)
 #     );
-
