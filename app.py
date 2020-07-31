@@ -230,7 +230,7 @@ def pages():
                 i += 1
                 if (selected + str(i) + '.jpg') not in x:
                         break
-        return render_template("pages.html", out = out)
+        return render_template("pages.html", out = out, len = len(out))
 
 @app.route("/explore")
 def explore():
