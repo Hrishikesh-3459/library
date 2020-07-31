@@ -206,6 +206,9 @@ def homepage():
         mycursor.execute("SELECT name, money FROM users WHERE user_id = (%s)", (user["id"],))
         sql_ret = mycursor.fetchone()
 
+        if len(titles) == 0:
+                return render_template("def_homepage.html")
+
         return render_template("homepage.html", books = titles, balance = sql_ret[1], name = sql_ret[0])
 
 
