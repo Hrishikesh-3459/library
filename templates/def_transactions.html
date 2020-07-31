@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Explore</title>
+    <title>Transactions</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="static/styles.css">
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg">
@@ -17,7 +18,7 @@
           
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item ">
+                <li class="nav-item active">
                   <a class="nav-link" href="/homepage">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
@@ -25,44 +26,30 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
-                </li>
-                <li class="nav-item active">
+                </li> 
+                <li class="nav-item">
                     <a class="nav-link" href="/explore">Explore</a>
                 </li>
-            </ul>
+            </ul>       
         </div>
-    </nav>
-        
-        <div class="row">
-
-            {% for i in books %}
-            <div class="col-lg-2 d-flex align-content-stretch flex-wrap book1">
-                <div class="card bg" style="width: 14rem;">
-                    <img src="static/{{ i }}Cover.jpg" class="card-img-top" alt="..." width=100 height=350>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ books[i] }}</h5>
-                    </div>
-                    <div class="card-footer">
-                        <form action = '/borrow' method = "post" style="float: left;">
-                            <button type="submit" class="btn button1" name = "selected" value = "{{ books[i] }}">BORROW</button>
-                        </form>
-                        {% if books[i] in read_list %}
-                        <form style="float: right;" action = '/readlist_add' method = "post">
-                            <button type="submit" class="btn button2 fa fa-heart" name = "read_selected" value = "{{ books[i] }}"></button>
-                        </form>
-                        {% else %}
-                        <form style="float: right;" action = '/readlist_add' method = "post">
-                            <button type="submit" class="btn button2 fa fa-heart-o" name = "read_selected" value = "{{ books[i] }}"></button>
-                        </form>
-                        {% endif %}
-                    </div>   
-                </div>
+        <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+        <li class="nav-item dropdown drop1" >
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Hello, {{ name }}
+            </a>  
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item drop2" href="/transactions">Go to account</a>
+                <a class="dropdown-item drop2 disabled" href="#">Balance: {{ balance }}</a>
+                <a class="dropdown-item drop2" href="/logout">Log out</a>
             </div>
-            {% endfor %}
-        </div> 
-    	
-    
+        </li>
+    </nav>
 
+    <div class="container">
+        <h1>Looks like you don't have any transactions, check our the <a href="/explore">explore</a> page</h1>
+    </div>
+
+        
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>

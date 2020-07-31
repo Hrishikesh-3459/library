@@ -26,7 +26,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact Us</a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/explore">Explore</a>
                 </li>
             </ul>
@@ -46,8 +46,8 @@
                         <form action = '/borrow' method = "post" style="float: left;">
                             <button type="submit" class="btn button1" name = "selected" value = "{{ books[i] }}">BORROW</button>
                         </form>
-                        <form style="float: right;">
-                            <button class="btn button2 fa fa-heart-o"></button>
+                        <form style="float: right;" action = '/readlist' method = "post">
+                            <button type="submit" class="btn button2 fa fa-heart" name = "read_selected" value = "{{ books[i] }}"></button>
                         </form>
                     </div>   
                 </div>

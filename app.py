@@ -207,7 +207,7 @@ def homepage():
         sql_ret = mycursor.fetchone()
 
         if len(titles) == 0:
-                return render_template("def_homepage.html")
+                return render_template("def_homepage.html", balance = sql_ret[1], name = sql_ret[0])
 
         return render_template("homepage.html", books = titles, balance = sql_ret[1], name = sql_ret[0])
 
@@ -327,6 +327,16 @@ def buy():
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
+        # Fetch the current balance of the user
+        mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
+        money = mycursor.fetchone()
+        balance = money[0] - 200
+
+        # Checks if the user has enough balance
+        if balance < 0:
+                return apology("Not enough balance")
+
+
         # Update the books table to show that the current user has made the transaction
         mycursor.execute(
                 f"UPDATE books SET {book} = 1 WHERE user_id = (%s)", (user["id"],))
@@ -339,15 +349,6 @@ def buy():
         # Update the transactions table
         mycursor.execute(f"INSERT INTO transactions (user_id, book_name, borrowed) VALUES (%s, %s, %s)", (user["id"], book, timestamp))
         mydb.commit()
-
-        # Fetch the current balance of the user
-        mycursor.execute("SELECT money FROM users WHERE user_id = (%s)", (user["id"],))
-        money = mycursor.fetchone()
-        balance = money[0] - 200
-
-        # Checks if the user has enough balance
-        if balance < 0:
-                return apology("Not enough balance")
 
         # Update the users table
         mycursor.execute("UPDATE users SET money = (%s) WHERE user_id = (%s)", (balance, user["id"]))
@@ -499,13 +500,41 @@ def transactions():
 
                 i.append(fee)
 
+        if len(tran) == 0:
+                return render_template("def_transactions.html")
         return render_template("transactions.html", transactions = tran)
+
+@app.route("/readlist_add", methods=["GET", "POST"])
+@login_required
+def readlist_add():
+        selected = request.form["read_selected"]
+
+        add_remove(selected)
+
+        return redirect('/explore')
 
 @app.route("/readlist", methods=["GET", "POST"])
 @login_required
 def readlist():
-        selected = request.form["read_selected"]
+        if request.method == "GET":
+                mycursor.execute("SELECT book_name FROM readlist WHERE user_id = (%s)", (user["id"],))
+                books_raw = list(mycursor.fetchall())
 
+                titles = {}
+                for i in books_raw:
+                        val = (i[0].split())
+                        tmp = (''.join(list(zip(*val))[0]))
+                        titles[tmp.lower()] = ' '.join(val).title()
+
+                return render_template("readlist.html", books = titles)
+        else:
+                selected = request.form["read_selected"]
+
+                add_remove(selected)
+
+                return redirect("/readlist")
+
+def add_remove(selected):
         mycursor.execute("SELECT book_name FROM readlist WHERE user_id = (%s)", (user["id"],))
         books_raw = mycursor.fetchall()
 
@@ -520,5 +549,3 @@ def readlist():
         else:
                 mycursor.execute("DELETE FROM readlist WHERE book_name = (%s) AND user_id = (%s)", (selected, user["id"]))
                 mydb.commit()
-
-        return redirect('/explore')
