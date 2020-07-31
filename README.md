@@ -16,7 +16,9 @@ Please make sure to do all of this before you run the code
 
 * Flask-Session
 
-* pip install mysql-connector-python
+* mysql-connector-python
+
+* Local MySQL Database
 
 ### Installing
 
@@ -47,6 +49,29 @@ $ venv\Scripts\activate
 (venv) $ pip3 install flask
 ```
 
+#### Installing Werkzeug
+
+```
+pip install Werkzeug
+```
+
+#### Installing Flask-Sessions
+
+```
+pip install Flask-Session
+```
+
+#### Installing MySQL Connector
+
+```
+pip install mysql-connector-python
+```
+
+#### Installing MySQL
+
+Download [MySQL](https://dev.mysql.com/downloads/mysql/) and go through the setup process, and make sure to keep note of your host, username and password.
+
+After installing MySQL, go to **db_config.py** and enter your host, username and password in the "init" function.
 
 ## Running
 
