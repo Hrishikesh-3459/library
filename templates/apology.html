@@ -14,15 +14,15 @@
 
     </head>
    <body>
-       <div class="container">
-           <form action="/homepage">
-               <button class=button1 type="submit" method="GET">Home</button>
-           </form>
-
-            <h1 class = "heading">ERROR</h1>    
-               <img src= "static\dog.jpg" alt= "Picture of a dog" style="width: 500px;height:500px;" />
-               <!-- The message that appears on the bottom of the image is dependant on the type of error. -->
-               <div class = "bottom-right">{{ bottom }}</div> 
-       </div>    
+        <form action="/homepage">
+            <button class="button1 apology" type="submit" method="GET">Home</button>
+        </form>
+           
+        <div class="container albus">
+            <h1 class = "heading" style="color:rgb(38, 179, 132)">ERROR</h1>    
+            <img src= "static\dog.jpg" alt= "Picture of a dog" style="width: 500px;height:500px;" />
+            <!-- The message that appears on the bottom of the image is dependant on the type of error. -->
+            <div class="apology1">{{ bottom }}</div> 
+        </div>    
    </body>
-</html> 
+</html>
