@@ -11,7 +11,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg">
-        <a class="navbar-brand" href="/">LIBRARY</a>
+        <a class="navbar-brand" href="/"><b>LIBRARY</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    			<span class="navbar-toggler-icon"></span>
    		</button>
@@ -22,11 +22,8 @@
                   <a class="nav-link" href="/homepage">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">About</a>
+                    <a class="nav-link" href="/about">About</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
-                </li> 
                 <li class="nav-item">
                     <a class="nav-link" href="/explore">Explore</a>
                 </li>
@@ -38,7 +35,7 @@
                 Hello, {{ name }}
             </a>  
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item drop2" href="/transactions">Go to account</a>
+                <a class="dropdown-item drop2" href="/transactions">Transactions</a>
                 <a class="dropdown-item drop2" href="/readlist">Read List</a>
                 <a class="dropdown-item drop2 disabled" href="#">Balance: {{ balance }}</a>
                 <a class="dropdown-item drop2" href="/logout">Log out</a>
