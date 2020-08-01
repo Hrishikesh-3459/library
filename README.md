@@ -126,11 +126,13 @@ Visit http://127.0.0.1:5000 to see the app running
 
 * [Flask](https://flask.palletsprojects.com/en/1.1.x/) - The Web Framework used
 
+* [MySQL](https://www.mysql.com/) - Database Management System used.
+
+* [JavaScript](https://www.javascript.com/) 
+
 * HTML - Markup Language used
 
 * CSS - Style Sheet Language used
-
-* [MySQL](https://www.mysql.com/) - Database Management System used.
 
 ## Authors
 
