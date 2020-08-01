@@ -73,7 +73,7 @@ Download [MySQL](https://dev.mysql.com/downloads/mysql/) and go through the setu
 
 After installing MySQL, go to **db_config.py** and enter your host, username and password in the "init" function.
 
-Note: You will have to create a database named 'library'
+**Note:** You will have to create a database named 'library'
 
 ```
 CREATE DATABASE library;
