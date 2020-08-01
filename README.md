@@ -128,7 +128,7 @@ Visit http://127.0.0.1:5000 to see the app running
 
 * [MySQL](https://www.mysql.com/) - Database Management System used.
 
-* [JavaScript](https://www.javascript.com/) 
+* [JavaScript](https://www.javascript.com/) - Programming Language used (Front-End)
 
 * HTML - Markup Language used
 
