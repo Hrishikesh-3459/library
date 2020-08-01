@@ -20,13 +20,12 @@ mycursor = mydb.cursor(buffered=True)
 db.configure_db(mycursor)
 
 
-# Just to show adithya how easy it is to upload files to github
-
 user = {"id": None, "name": None}
 
 app = Flask(__name__)
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
 
 # Ensure responses aren't cached
 @app.after_request
@@ -42,6 +41,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -55,12 +55,14 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+
 def apology(message):
         """ 
         Renders an apology page, whenever the user makes an error. 
         """
 
         return render_template("apology.html", bottom=message)
+
 
 @app.route("/")
 def index():
@@ -69,6 +71,7 @@ def index():
         """
 
         return render_template("index.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -180,6 +183,7 @@ def register():
         else:
                 return render_template("signUp.html")
 
+
 @app.route("/homepage")
 @login_required
 def homepage():
@@ -209,6 +213,11 @@ def homepage():
         if len(titles) == 0:
                 return render_template("def_homepage.html", balance = sql_ret[1], name = sql_ret[0])
 
+        try:
+                titles.pop('ui')
+        except KeyError:
+                pass
+
         return render_template("homepage.html", books = titles, balance = sql_ret[1], name = sql_ret[0])
 
 
@@ -231,6 +240,7 @@ def pages():
                 if (selected + str(i) + '.jpg') not in x:
                         break
         return render_template("pages.html", out = out, len = len(out))
+
 
 @app.route("/explore")
 def explore():
@@ -300,6 +310,7 @@ def logout():
     # Redirect user to login form
     return redirect('/')
 
+
 @app.route("/borrow", methods=["GET", "POST"])
 @login_required
 def borrow():
@@ -356,6 +367,7 @@ def buy():
 
         return redirect('/homepage')
 
+
 @app.route("/returnBook", methods=["GET", "POST"])
 @login_required
 def returnBook():
@@ -368,8 +380,6 @@ def returnBook():
     return render_template("returnBook.html", book = book)
 
 
-
-
 @app.route("/about")
 def contact():
         """ 
@@ -377,6 +387,7 @@ def contact():
         """
 
         return render_template("about.html")
+
 
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
@@ -424,6 +435,7 @@ def sell():
                                 new_bal -= 2
 
                 fee = abs(new_bal - old_bal)
+                
                 # Database start
 
                 # Update the books table to show that the current user has made the transaction
@@ -450,6 +462,9 @@ def sell():
 @app.route("/transactions", methods=["GET", "POST"])
 @login_required
 def transactions():
+        """
+        Shows the user, all the transaction they have made so far
+        """
 
         ts = time.time()
         cur_time_raw = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
@@ -504,18 +519,26 @@ def transactions():
                 return render_template("def_transactions.html")
         return render_template("transactions.html", transactions = tran)
 
+
 @app.route("/readlist_add", methods=["GET", "POST"])
 @login_required
 def readlist_add():
+        """
+        Adding a book to readlist table, or removing it if it already exists
+        """
         selected = request.form["read_selected"]
 
         add_remove(selected)
 
         return redirect('/explore')
 
+
 @app.route("/readlist", methods=["GET", "POST"])
 @login_required
 def readlist():
+        """
+        To display the readlist template
+        """
         if request.method == "GET":
                 mycursor.execute("SELECT book_name FROM readlist WHERE user_id = (%s)", (user["id"],))
                 books_raw = list(mycursor.fetchall())
@@ -534,7 +557,11 @@ def readlist():
 
                 return redirect("/readlist")
 
+
 def add_remove(selected):
+        """
+        A function that checks wheter the given book is already in the readlist table, if it is, then it removes it, otherwise it adds it.
+        """
         mycursor.execute("SELECT book_name FROM readlist WHERE user_id = (%s)", (user["id"],))
         books_raw = mycursor.fetchall()
 

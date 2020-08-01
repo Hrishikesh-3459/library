@@ -1,4 +1,12 @@
-# Program to convert each page of the pdf file to a jpg
+# This file is used to convert PDS files to JPEG
+# "pdf2image" is easy to install on mac -> brew install Poppler, then -> pip install pdf2image
+# Make sure you have a database connected and ready.
+# Try to stay accurate to the format specified for the path of the pdf file
+# A new column in the "books" table will be automatically added
+# You would also need to add a "cover" image for the book
+
+
+
 from pdf2image import convert_from_path
 from db_config import dbMysql
 import mysql.connector

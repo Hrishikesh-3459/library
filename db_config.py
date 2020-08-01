@@ -1,6 +1,8 @@
 import mysql.connector
 
 
+# Make sure you have a "library" database created!
+
 class dbMysql():
     def __init__(self):
         self.pwd = "password"
@@ -73,22 +75,3 @@ class dbMysql():
             "book_name VARCHAR(255) NOT NULL,"
             "PRIMARY KEY (serial_no), FOREIGN KEY (user_id) REFERENCES users(user_id))")
         self.mydb.commit()
-
-
-# CREATE TABLE `users` (
-#   `id` INT NOT NULL AUTO_INCREMENT,
-#   `username` VARCHAR(50) NOT NULL,
-#   `password` VARCHAR(256) NOT NULL,
-#   `money` INT NULL DEFAULT 1000.00,
-#   PRIMARY KEY (`id`)
-# )
-
-# CREATE TABLE register (
-# 	serial_no INT NOT NULL AUTO_INCREMENT,
-#     user_id INT,
-#     book_name VARCHAR(50) NOT NULL,
-#     borrowed TIMESTAMP,
-#     returned TIMESTAMP,
-#     PRIMARY KEY (serial_no),
-#     FOREIGN KEY (user_id) REFERENCES users(id)
-#     );
