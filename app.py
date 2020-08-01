@@ -20,7 +20,7 @@ mycursor = mydb.cursor(buffered=True)
 db.configure_db(mycursor)
 
 
-user = {"id": None, "name": None}
+user = {"id": None, "name": None, "balance": None}
 
 app = Flask(__name__)
 
@@ -209,16 +209,17 @@ def homepage():
 
         mycursor.execute("SELECT name, money FROM users WHERE user_id = (%s)", (user["id"],))
         sql_ret = mycursor.fetchone()
+        user["balance"] = sql_ret[1]
 
         if len(titles) == 0:
-                return render_template("def_homepage.html", balance = sql_ret[1], name = sql_ret[0])
+                return render_template("def_homepage.html", balance = user["balance"], name = sql_ret[0].title())
 
         try:
                 titles.pop('ui')
         except KeyError:
                 pass
 
-        return render_template("homepage.html", books = titles, balance = sql_ret[1], name = sql_ret[0])
+        return render_template("homepage.html", books = titles, balance = user["balance"], name = sql_ret[0].title())
 
 
 @app.route("/pages", methods=["GET", "POST"])
@@ -275,13 +276,11 @@ def explore():
                 val = (i[0].split('_'))
                 tmp = (''.join(list(zip(*val))[0]))
                 titles[tmp] = ' '.join(val).title()
-        fin = {}
-        i = 0
-        for j in titles:
-                if i == 0:
-                        i += 1
-                        continue
-                fin[j] = titles[j]
+
+        try:
+                titles.pop('ui')
+        except KeyError:
+                pass
 
         # Create a list of books that the user has added to readlist
         
@@ -292,7 +291,7 @@ def explore():
         for i in read_list_raw:
                 read_list.append(i[0])
 
-        return render_template("explore.html", books = fin, read_list = read_list)
+        return render_template("explore.html", books = titles, read_list = read_list)
 
 
 @app.route("/logout")
@@ -516,7 +515,7 @@ def transactions():
                 i.append(fee)
 
         if len(tran) == 0:
-                return render_template("def_transactions.html")
+                return render_template("def_transactions.html", name = user["name"].title(), balance = 1000)
         return render_template("transactions.html", transactions = tran)
 
 
@@ -549,7 +548,9 @@ def readlist():
                         tmp = (''.join(list(zip(*val))[0]))
                         titles[tmp.lower()] = ' '.join(val).title()
 
-                return render_template("readlist.html", books = titles)
+                if len(titles) == 0:
+                        return render_template("def_readlist.html", name = user["name"].title(), balance = user["balance"])
+                return render_template("readlist.html", books = titles, name = user["name"].title(), balance = user["balance"])
         else:
                 selected = request.form["read_selected"]
 

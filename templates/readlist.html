@@ -28,6 +28,17 @@
                 </li>
             </ul>
         </div>
+        <li class="nav-item dropdown drop1" >
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Hello, {{ name }}
+            </a>  
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item drop2" href="/transactions">Transactions</a>
+                <a class="dropdown-item drop2" href="/readlist">Read List</a>
+                <a class="dropdown-item drop2 disabled" href="#">Balance: {{ balance }}</a>
+                <a class="dropdown-item drop2" href="/logout">Log out</a>
+            </div>
+        </li>
     </nav>
         
         <div class="row">
