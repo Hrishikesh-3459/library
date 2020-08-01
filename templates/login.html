@@ -10,7 +10,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg">
-        <a class="navbar-brand" href="/">LIBRARY</a>
+        <a class="navbar-brand" href="/"><b>LIBRARY</b></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
    			<span class="navbar-toggler-icon"></span>
    		</button>
@@ -21,10 +21,7 @@
                   <a class="nav-link" href="/homepage">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
+                    <a class="nav-link" href="/about">About</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/explore">Explore</a>
@@ -32,21 +29,24 @@
             </ul>
         </div>
     </nav>
+    <div class="header1" style="background-image: url('static/loginBook.jpg');">
         <div class="container centre">
-            <form action="/login" method="post" style = "text-align: center">
-                <h1>LOG IN</h1>
+            <form action="/login" method="post">
+                <h1><b>LOG IN</b></h1>
                 <div class="form-group user">
                     <!-- Try changin type to email -->
-                    <label for="exampleInputEmail1">Email ID/Username</label>
+                    <label for="exampleInputEmail1"><b>Email ID/Username</b></label>
                     <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="user_inp" required>
                 </div>
                 <div class="form-group user">
-                           <label for="exampleInputPassword1">Password</label>
+                           <label for="exampleInputPassword1"><b>Password</b></label>
                            <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
                 </div>
-                <button type="submit" class="btn button1">Submit</button>
+                <button type="submit" class="btn button1"><b>Submit</b></button>
             </form>
         </div>
+    </div>
+        
     
     
 
