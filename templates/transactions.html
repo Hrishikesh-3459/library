@@ -3,29 +3,55 @@
 <head>
     <title>	Transactions </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 <body>
-    <table action="/">
-        <thread>
-            <tr>
-                <th>Serial Number</th>
-                <th>Book Name</th>
-                <th>Borrowed Date</th>
-                <th>Returned Date</th>
-                <th>Fee</th>
-            </tr>
-        </thread>
-        <tbody>
-            {% for i in transactions%}
+    <nav class="navbar navbar-expand-lg navbar-light bg">
+        <a class="navbar-brand" href="/"><b>LIBRARY</b></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+   			<span class="navbar-toggler-icon"></span>
+   		</button>
+          
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="/homepage">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/explore">Explore</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container table">
+        <table action="/">
+            <thread>
                 <tr>
-                    <td>{{ i[0] }}</td>
-                    <td>{{ i[1] }}</td>
-                    <td>{{ i[2] }}</td>
-                    <td>{{ i[3] }}</td>
-                    <td>{{ i[4] }}</td>
+                    <th>Serial Number</th>
+                    <th>Book Name</th>
+                    <th>Borrowed Date</th>
+                    <th>Returned Date</th>
+                    <th>Fee</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thread>
+            <tbody>
+                {% for i in transactions%}
+                    <tr>
+                        <td>{{ i[0] }}</td>
+                        <td>{{ i[1] }}</td>
+                        <td>{{ i[2] }}</td>
+                        <td>{{ i[3] }}</td>
+                        <td>{{ i[4] }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
