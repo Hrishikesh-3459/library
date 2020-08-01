@@ -370,13 +370,13 @@ def returnBook():
 
 
 
-@app.route("/contact")
+@app.route("/about")
 def contact():
         """ 
         Page where the contact info is displayed
         """
 
-        return render_template("contact.html")
+        return render_template("about.html")
 
 @app.route("/sell", methods=["GET", "POST"])
 @login_required
