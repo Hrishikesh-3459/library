@@ -32,8 +32,8 @@ Type all of this in the terminal
 
 ```
 $ pip3 install virtualen
-$ mkdir voiceControlledCalculator
-$ cd voiceControlledCalculator
+$ mkdir library
+$ cd library
 $ virtualenv venv --system-site-packages
 $ source venv/bin/activate
 (venv) $ pip3 install Flask
