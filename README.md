@@ -42,8 +42,8 @@ $ source venv/bin/activate
 
 ```
 $ pip3 install virtualenv
-$ mkdir voiceControlledCalculator
-$ cd voiceControlledCalculator
+$ mkdir library
+$ cd library
 $ py -3 -m venv venv
 $ venv\Scripts\activate
 (venv) $ pip3 install flask
