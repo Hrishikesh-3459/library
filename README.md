@@ -132,7 +132,7 @@ Visit http://127.0.0.1:5000 to see the app running
 
 * HTML - Markup Language used
 
-* CSS - Style Sheet Language used
+* CSS - Style Sheet Language used here.
 
 ## Authors
 
